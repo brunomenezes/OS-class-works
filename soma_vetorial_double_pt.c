@@ -14,24 +14,23 @@ void *soma_vet(void *args);
 
 struct call_args
 {
-	double *a, *soma,*c;
+	double *a, *soma;
 	int size,t;
 };
 
 int main(int argc, char **argv)
 {
 	int status;
+	int THREADS_NUMBER=2;
 	cpu_set_t affinity_mask;
-	pthread_t tid[2];
-	pthread_attr_t attr[2];
-	struct call_args my_args[2];
+	pthread_t tid[THREADS_NUMBER];
+	pthread_attr_t attr[THREADS_NUMBER];
+	struct call_args my_args[THREADS_NUMBER];
 	FILE *inp_a;
 	long int size = atol(argv[2]);
 	long int i;
-	int THREADS_NUMBER=2;
 	double *a, *c, *soma;
 	a = (double *) malloc(sizeof(double) * size);
-	c = (double *) malloc(sizeof(double) * size);
 	soma = (double *) malloc(sizeof(double) * THREADS_NUMBER);
 	inp_a = fopen(argv[1], "r");
 
@@ -44,7 +43,6 @@ int main(int argc, char **argv)
 	for(i=0; i<THREADS_NUMBER; i++)
 	{
 		my_args[i].a=a;
-		my_args[i].c=c;
 		my_args[i].soma=soma;
 		my_args[i].size=size;
 		my_args[i].t=i;
